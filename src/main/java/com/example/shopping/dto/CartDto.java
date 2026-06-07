@@ -3,7 +3,6 @@ package com.example.shopping.dto;
 import java.io.Serializable;
 
 import com.example.shopping.entity.CartEntity;
-import com.example.shopping.form.CartForm;
 
 import lombok.Data;
 
@@ -23,18 +22,8 @@ public class CartDto implements Serializable{
 	// 結合先テーブル
 	private MenuDto menu;
 	
-	/**
-	 * Dto → Form 変換
-	 * @return カート情報（Form）
-	 */
-	public CartForm toForm() {
-		
-		CartForm cartForm = new CartForm();
-		cartForm.setCommodityId(commodityId);
-		cartForm.setQuantity(quantity);
-		cartForm.setMenu(menu.toForm());
-		
-		return cartForm;
+	public CartDto(){
+		menu = new MenuDto();
 	}
 	
 	/**
