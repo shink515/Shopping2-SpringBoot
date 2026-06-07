@@ -47,18 +47,21 @@ public class ShoppingRestController {
 	@GetMapping("/menu/list")
 	public List<MenuDto> menuList(HttpSession httpSession) {
 		
-		httpSession.setAttribute("orders", cartService.findAll());
+		List<CartDto> sessionOrders = cartService.findAll();
 		
-		// もしカート情報セッションが存在しない場合、空のセッションを作成
-		if(Objects.isNull(httpSession.getAttribute("orders"))) {
-			List<CartDto> newSession = new ArrayList<CartDto>();
-			httpSession.setAttribute("orders", newSession);
+		if(Objects.isNull(sessionOrders)) {
+			List<CartDto> emptyOrders = new ArrayList<CartDto>();
+			httpSession.setAttribute("orders", emptyOrders);
+			
+		} else {
+			
+			httpSession.setAttribute("orders", sessionOrders);
 		}
 		
-		List<MenuDto> dtoList = menuService.findAll();
-		httpSession.setAttribute("menus", dtoList);
+		List<MenuDto> menuList = menuService.findAll();
+		httpSession.setAttribute("menus", menuList);
 		
-		return dtoList;
+		return menuList;
 	}
 	
 	/**
@@ -78,7 +81,6 @@ public class ShoppingRestController {
 	 */
 	@GetMapping("/cart/all/clear")
 	public void cartClear(HttpSession httpSession) {
-		httpSession.removeAttribute("orders");
 		
 		List<CartDto> newSession = new ArrayList<CartDto>();
 		httpSession.setAttribute("orders", newSession);

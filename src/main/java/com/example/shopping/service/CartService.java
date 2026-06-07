@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.example.shopping.dto.CartDto;
 import com.example.shopping.dto.MenuDto;
 import com.example.shopping.entity.CartEntity;
-import com.example.shopping.form.CartForm;
 import com.example.shopping.repository.CartRepository;
 
 /**
@@ -140,37 +139,6 @@ public class CartService {
 		return dtoList;
 	}
 	
-	/**
-	 * Dtoリスト → Formリスト 変換
-	 * @param dtoList カート内商品リスト（Dto）
-	 * @return formList カート内商品リスト（Form)
-	 */
-	public List<CartForm> convertFromDtoToForm(List<CartDto> dtoList){
-		
-		List<CartForm> formList = new ArrayList<CartForm>();
-		
-		dtoList.stream().forEach(dto -> {
-			formList.add(dto.toForm());
-		});
-		
-		return formList;
-	}
-	
-	/**
-	 * Formリスト → Dtoリスト 変換
-	 * @param formList カート内商品リスト（form）
-	 * @return dtoList カート内商品リスト（Dto)
-	 */
-	public List<CartDto> convertFromFormToDto(List<CartForm> formList){
-		
-		List<CartDto> dtoList = new ArrayList<CartDto>();
-		
-		formList.stream().forEach(form -> {
-			dtoList.add(form.toDto());
-		});
-		
-		return dtoList;
-	}
 	
 	/**
 	 * Dtoリスト → Entityリスト 変換

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.shopping.dto.MenuDto;
 import com.example.shopping.entity.MenuEntity;
-import com.example.shopping.form.MenuForm;
 import com.example.shopping.repository.MenuRepository;
 
 /**
@@ -57,19 +56,4 @@ public class MenuService {
 		return dtoList;
 	}
 	
-	/**
-	 * Dtoリスト → Formリスト 変換
-	 * @param dtoList メニュー情報（Dto）
-	 * @return formList メニュー情報（Form）
-	 */
-	public List<MenuForm> convertFromDtoToForm(List<MenuDto> dtoList){
-		
-		List<MenuForm> formList = new ArrayList<MenuForm>();
-		dtoList.stream().forEach(dto -> {
-			formList.add(dto.toForm());
-		});
-		
-		return formList;
-		
-	}
 }
