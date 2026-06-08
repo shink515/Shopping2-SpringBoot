@@ -22,7 +22,8 @@ public class SessionService {
 	// 指定されたセッションデータ（カート情報）の数量を変更
 	public List<CartDto> sessionQuantities(List<CartDto> sessionOrders, Integer commodityId, Integer quantity) {
 		
-		sessionOrders.stream().filter(order -> commodityId.equals(order.getCommodityId())).forEach(order -> order.setQuantity(quantity));	
+		sessionOrders.stream().filter(order -> order.getCommodityId() == commodityId).forEach(order -> order.setQuantity(quantity));
+		
 		return sessionOrders;
 	}
 	
@@ -36,7 +37,7 @@ public class SessionService {
 	public List<CartDto> sessionDeleteId(List<CartDto> sessionList, Integer commodityId){
 		
 		List<CartDto> newSessionList = new ArrayList<CartDto>();
-		sessionList.stream().filter(order -> !commodityId.equals(order.getCommodityId())).forEach(order -> newSessionList.add(order));
+		sessionList.stream().filter(order -> order.getCommodityId() != commodityId).forEach(order -> newSessionList.add(order));
 		
 		return newSessionList;
 	}
@@ -48,29 +49,30 @@ public class SessionService {
 	 * @return 編集後セッションリスト
 	 */
 	public List<CartDto> sessionAddId(List<CartDto> sessionList, Integer commodityId) {
-		
-		boolean isExist = false;
-		
-		for (CartDto session : sessionList) {
-	        if (session.getCommodityId().equals(commodityId)) {
-	            session.setQuantity(session.getQuantity() + 1);
-	            isExist = true;
-	            break;
-	        }
-	    }
 
-	    // 2. カートになければ新しく作成してリストに追加
-	    if (!isExist) {
-	        CartDto newOrder = new CartDto();
-	        MenuDto findMenu = menuService.findById(commodityId);
-	        
-	        newOrder.setCommodityId(commodityId);
-	        newOrder.setQuantity(1);
-	        newOrder.setMenu(findMenu);
-	        
-	        sessionList.add(newOrder);
-	    }
-
-	    return sessionList;
+		List<CartDto> newSessionList = new ArrayList<CartDto>();
+		boolean flag = false;
+		
+		for(CartDto order : sessionList) {
+			if(commodityId.equals(order.getCommodityId())) {
+				
+				order.setQuantity(order.getQuantity() + 1);
+				flag = true;
+			}
+		}
+		
+		if(!flag) {
+			MenuDto newMenu = menuService.findById(commodityId);
+			CartDto newOrder = new CartDto();
+			
+			newOrder.setCommodityId(commodityId);
+			newOrder.setQuantity(1);
+			newOrder.setMenu(newMenu);
+			
+			sessionList.add(newOrder);
+			return sessionList;
+		}
+		
+		return sessionList;
 	}
 }
